@@ -1,3 +1,492 @@
+Mon Mar 24 10:27:40 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/Process_Unix.pm:
+        * bin/PerlACE/TestTarget.pm:
+          Improve remote (-shell) testing support.
+
+        * include/makeinclude/platform_android.GNU:
+          Add required standard libraries for rtti, exceptions and (shared)
+          stl support on Android.
+
+Sun Mar 23 22:55:42 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/ACE+TAO+CIAO+DAnCE.json:
+          Exclude some OpenDDS logging macros from the test
+          coverage
+
+Fri Mar 21 19:58:03 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Map_Manager_Test.cpp:
+          Fix windows warnings
+
+Mon Mar 17 10:41:37 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Map_Manager_Test.cpp:
+          Fixed possible divide by zero reported by Coverity
+
+Mon Mar 17 10:20:30 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Manual_Event_Test.cpp:
+          Fixed data race
+
+Mon Mar 17 10:12:44 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Log_Msg.h:
+        * ace/Log_Msg.inl:
+        * ace/Log_Msg.cpp:
+          Don't try to cache the process id, but just call the ACE OS
+          method when needed (which is just in some cases and the operation
+          is inline). Fixes possible data races reported by Intel Inspector
+          XE.
+
+Mon Mar 17 09:52:03 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/IO_SAP.h:
+        * ace/IO_SAP.cpp:
+        * ace/IPC_SAP.cpp:
+        * ace/IPC_SAP.h:
+          Don't try to cache the process id, but just call the ACE OS
+          method when needed (which is just in some cases and the operation
+          is inline). Fixes possible data races reported by Intel Inspector
+          XE.
+
+Mon Mar 17 09:50:48 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Process.inl:
+          Layout change
+
+Fri Mar 14 15:58:19 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Auto_Event_Test.cpp:
+          Use atomic op for amount of timeouts to fix data race reported
+          by Intel Inspector XE
+
+Fri Mar  7 15:30:15 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Log_Msg.cpp:
+          Missed one place where flags_ was used
+
+Fri Mar  7 15:26:15 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Log_Msg.cpp:
+          Fixed a data race condition related to the ACE_Log_Msg::flags_
+          static variable. Setting/retrieving it from application code
+          was using a lock, but the ACE_Log_Msg::log didn't use the lock
+          in the part where it is building up the ACE Log Record. Put
+          a flags variable on the stack which we only set once using the
+          accessor method which uses the lock, than check that flag
+          inside the method.
+
+Fri Mar  7 12:37:04 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Timer_Hash_T.cpp:
+          Initialize pointer member explicitly to zero to resolve
+          Coverity error
+
+Fri Mar  7 12:02:17 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Reactor_Token_T.cpp:
+          Use copy constructor instead of assignment operator
+
+        * ace/Timer_Hash_T.h:
+        * ace/Timer_List_T.h:
+        * ace/WFMO_Reactor.h:
+          Doxygen improvements
+
+        * ace/WFMO_Reactor.cpp:
+        * ace/Timer_Heap_T.cpp:
+          Layout changes
+
+Fri Mar  7 11:56:10 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Timer_Queue_T.h:
+        * ace/Timer_Queue_T.inl:
+        * ace/Timer_Queue_T.cpp:
+          Moved the expire() method from the inline to the cpp, it is
+          virtual so can't be inlined. Further, the expire() method
+          had an optimization that it checked is_empty() before
+          callig the real expire that grabs the lock. This is causing
+          a potential data race because the timer hash overrides is_empty
+          and uses a member variable to determine whether the queue
+          is empty or not, this is now accessed without having the
+          timer queue locked. Therefor the optimization was removed,
+          we directly call into the real expire that first grabs its
+          lock
+
+Fri Mar  7 10:22:01 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/inspxe-cl.sup:
+          Starter suppression file for Intel C++ Inspector-XE
+
+Wed Mar  5 14:45:12 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/config-icc-common.h:
+          Intel C++ does support pragma once
+
+Fri Feb 28 07:59:51 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * NEWS:
+        * bin/diff-builds-and-group-fixed-tests-only.sh:
+        * debian/debian.changelog:
+        * debian/debian.control:
+        * docs/Download.html:
+        * docs/bczar/bczar.html:
+        * etc/index.html:
+          Make x.2.5 public and prepare for next release
+
+        * ace/config-win32-borland.h:
+          Improved C++BuilderXE support
+
+Fri Feb 28 08:46:21 CET 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ACE version 6.2.5 released.
+
+Tue Feb 25 09:32:15 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/auto_run_tests.pl:
+        * tests/run_test.pl:
+          Changed the way we enable coverity test separation, introduced
+          new Coverity test config instead of commandline option
+
+Mon Feb 24 11:31:01 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Throughput_Stats.cpp:
+          Fixed compile warning
+
+Mon Feb 24 09:39:49 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Throughput_Stats.cpp:
+          Guard for a divide by zero, triggered by the TAO Event
+          Service tests on Windows on more recent hardware
+
+Fri Feb 21 15:05:53 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Process_Env_Test.cpp:
+          Use LM_ERROR with ACE_ERROR
+
+Fri Feb 21 10:09:00 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_33_Test.cpp:
+        * tests/run_test.lst:
+        * tests/tests.mpc:
+          New compiler feature test to validate that a switch with char
+          works as it should
+
+Fri Feb 21 07:31:21 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * debian/debian.changelog:
+        * debian/debian.control:
+        * debian/patches/series:
+        * debian/patches/reduce-doxygen-doc.diff:
+          Fixed debian packaging, thanks to Michael Dille
+          <mdille3 at andrew dot cmu dot edu> for providing
+          the patches
+
+Wed Feb 19 20:25:34 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Compression/rle/RLECompressor.cpp:
+        * ace/config-win32-borland.h:
+        * ace/post.h:
+        * ace/pre.h:
+          Improved C++BuilderXE support
+
+Wed Feb 19 12:23:19 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/config-icc-common.h:
+          Intel C++ 2013 SP1 Update 2 has adequate C++11 support when
+          it is used in GCC 4.7 or higher emulation mode
+
+Tue Feb 18 21:39:29 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * rpmbuild/ace-tao.spec: Fixed --with tao, again. Some Linuxen's
+          rpmbuild treats %define differently. When in doubt, use %global.
+
+Mon Feb 17 12:10:59 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Process.cpp:
+          Only use pragma GCC when using the gcc compiler
+
+Mon Feb 17 11:23:13 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/auto_run_tests.pl:
+          Added new commandline argument -x which enables Coverity
+          Test Analyzer test separation. This is not enabled by
+          default because enabling test separation increases the
+          size of the Coverity intermediate directory significantly
+
+Fri Feb 14 18:42:12 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Local_Name_Space_T.cpp:
+          Fixed coverity warning about unitialized pointer fields
+
+Fri Feb 14 18:37:45 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/IO_Cntl_Msg.inl:
+          Fixed coverity warning about unitialized fields
+
+Fri Feb 14 18:11:59 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * apps/gperf/src/Key_List.cpp:
+          Fixed problems with old style casts.
+          Yogesh Sharma <Yogesh dot Sharma at saabsensis dot com> for
+          reporting the bug and supplying a patch. Closes [BUGID:4115].
+
+Fri Feb 14 16:34:46 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * ace/Dev_Poll_Reactor.cpp (dispatch_io_event): Do not dispatch to
+          a handler that is suspended. Prevents multiple callbacks to the
+          same handler at the same time when multiple threads are dispatching
+          and changing registrations at the same time. Fixes Bugzilla 4129.
+          Thank you to Alexey Zubko and Howard Finer for both coming up with
+          the same answer independently!
+
+        * THANKS: Added Alexey Zubko to the Hall of Fame.
+
+Tue Feb 11 17:54:42 UTC 2014  Abdullah Sowayan  <sowayan@gmail.com>
+
+        * ace/config-macosx-iOS-hardware.h:
+        * ace/config-macosx-iOS-simulator.h:
+          Use Mavericks (OSX 10.9) as the host build environment.
+
+Tue Feb 11 09:41:16 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/config-macosx-mavericks.h:
+        * ace/config-macosx-mountainlion.h:
+          Moved some defines for disabling deprecated functions to the
+          mountainlion file
+
+Mon Feb 10 09:19:57 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * docs/Download.html:
+        * etc/index.html:
+          Updated some links
+
+Sun Feb  9 18:01:10 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * rpmbuild/ace-tao.spec:
+          Fixed ACE version
+
+Fri Feb  7 23:10:11 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * rpmbuild/ace-tao.spec: Fixed conditionals to package TAO when needed.
+
+Fri Feb  7 21:57:00 UTC 2014  William R. Otte  <wotte@dre.vanderbilt.edu>
+
+        * ace/config-macosx-mavericks.h:
+          If ACE_HAS_CUSTOM_EXPORT_MACROS isn't set, disable it. Also disable
+          two deprecated functions (sbrk and tempnam).
+
+Thu Feb  6 15:55:00 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * rpmbuild/ace-tao.spec: Fixed syntax problems in TAO headers
+          collection.
+
+Wed Feb  5 19:07:37 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * rpmbuild/ace-tao.spec: Added support for --without tao (and
+          --with tao), defaulting to --with tao. Allows one to build just
+          the ACE RPMs from an ACE-src tarball.
+
+        * NEWS: Added note about being able to build ACE RPMs.
+
+Mon Feb  3 12:55:23 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Compression/rle/RLECompressor.cpp:
+          Fixed another boundary bug. Thanks to Derek Dominish
+          <derek dot dominish at dsto dot defence dot gov dot au> for this fix
+
+Thu Jan 30 17:00:22 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * ace/Process.h: A few more doxygen adjustments.
+
+Wed Jan 29 20:52:37 UTC 2014  Steve Huston  <shuston@riverace.com>
+
+        * ace/Process.h:
+        * ace/Process_Manager.h: Documentation improvements.
+
+Wed Jan 29 19:29:58 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/PerlACE/ProcessVX.pm:
+          Not see a problem using an iBoot as failure when we haven't
+          tried multiple times
+
+        * bin/PerlACE/ProcessWinCE.pm:
+          Add quotes around filenames when copying, solves problems when
+          using paths with spaces. This is not a full solution, it
+          solves one, but there are more, unless some structural work
+          gets done, don't use paths with spaces!
+
+Fri Jan 24 10:05:58 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Module.cpp:
+          Initialize pointer member with 0, fixes Coverity error
+
+Fri Jan 24 08:57:01 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Compression/rle/RLECompressor.cpp:
+          Fix bug on a boundary condition where 128 bytes of exactly the same
+          character (ie 0x00) where that is the end of the compressor input
+          fails to produce the correct output. Thanks to Derek Dominish
+          <derek dot dominish at dsto dot defence dot gov dot au> for this fix
+
+Thu Jan 23 19:28:22 UTC 2014  Phil Mesnier  <mesnier_p@ociweb.com>
+
+        * THANKS:
+          Added Colin Shen to the list.
+
+Wed Jan 22 08:36:43 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/coverity_model.cpp:
+          Coverity model file
+
+Sat Jan 18 18:38:50 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * protocols/ace/INet/HTTPS_Context.cpp:
+          Copy constructor is declared private so that it can't be used,
+          no need for an implementation, resolves Coverity error
+
+Fri Jan 17 10:11:41 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * apps/JAWS/server/HTTP_Server.cpp:
+          Added missing break
+
+Thu Jan 16 10:36:20 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/High_Res_Timer.cpp:
+          Fixed implementation of ACE_High_Res_Timer::global_scale_factor,
+          only set the global_scale_factor_status_ when it is zero and we
+          have the lock.
+
+Thu Jan  9 12:33:11 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * etc/ace.doxygen:
+        * etc/ace_inet.doxygen:
+        * etc/ace_qos.doxygen:
+        * etc/ace_rmcast.doxygen:
+        * etc/ace_ssl.doxygen:
+        * etc/acexml.doxygen:
+          Upgraded to doxygen 1.8.6
+
+Thu Jan  9 10:26:46 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * NEWS:
+          Prepare for next release
+
+        * bin/diff-builds-and-group-fixed-tests-only.sh:
+        * docs/Download.html:
+        * docs/bczar/bczar.html:
+        * etc/index.html:
+          Make x.2.4 public to the world
+
+Thu Jan 09 09:18:31 CET 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ACE version 6.2.4 released.
+
+Fri Jan  3 13:34:01 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_31_Test.cpp:
+          Small extension, also add one example using a late specified
+          return type
+
+Tue Dec 31 10:17:54 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_32_Test.cpp:
+        * tests/run_test.lst:
+        * tests/tests.mpc:
+          New C++11 test for unions
+
+Tue Dec 31 10:12:14 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_29_Test.cpp:
+          Added another member
+
+Tue Dec 31 07:45:07 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Timer_Queue_Adapters.cpp:
+          Call gettimeofday on the timer queue instead of calling
+          ACE_OS directly, fixes problems when using the hr time. Thanks
+          to Erik Sohns <erik dot sohns at web dot de> for reporting
+          this and providing a patch
+
+Mon Dec 30 12:31:27 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_31_Test.cpp:
+        * tests/run_test.lst:
+        * tests/tests.mpc:
+          New C++11 test
+
+Mon Dec 30 11:18:12 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/os_include/sys/os_stat.h:
+          Define S_ISDIR when not defined
+
+        * tests/Compiler_Features_29_Test.cpp:
+        * tests/Compiler_Features_30_Test.cpp:
+        * tests/run_test.lst:
+        * tests/tests.mpc:
+          Two new C++11 tests
+
+Wed Dec 25 00:00:00 UTC 2013  Douglas C. Schmidt  <schmidt@dre.vanderbilt.edu>
+
+        * Merry Christmas everyone!
+
+Mon Dec 23 10:19:42 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_23_Test.cpp:
+        * tests/Compiler_Features_28_Test.cpp:
+          Added missing include of cstdint
+
+Fri Dec 20 13:43:13 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * docs/bczar/bczar.html:
+          Added package
+
+Fri Dec 20 08:10:27 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Handle_Set.h:
+          Fuzz error
+
+        * bin/valgrind.supp:
+          Disabled on RTI check, looks it causes problems with the
+          latest valgrind release
+
+Thu Dec 19 18:57:09 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/Handle_Set.h:
+          Added check that FD_SETSIZE may not be bigger than __FD_SETSIZE.
+          Thanks to Mike Ketchen <mketchen at broadsoft dot com> for
+          suggesting this
+
+Wed Dec 18 14:16:57 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * etc/ace_inet.doxygen:
+        * etc/ace_qos.doxygen:
+        * etc/ace_rmcast.doxygen:
+        * etc/ace_ssl.doxygen:
+        * etc/acexml.doxygen:
+          Upgraded to doxygen 1.8.5
+
+Wed Dec 18 11:22:02 UTC 2013  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * docs/bczar/bczar.html:
+          Updated packages
+
+        * etc/ace.doxygen:
+          Upgraded to doxygen 1.8.5
+
+Thu Dec 12 16:28:45 UTC 2013  Steve Huston  <shuston@riverace.com>
+
+        * ace/ATM_Stream.cpp: Add missing OS_NS_string.h
+
+Thu Dec 12 00:07:09 UTC 2013  Phil Mesnier  <mesnier_p@ociweb.com>
+
+        * ace/SOCK_Acceptor.cpp:
+          In order for Windows Vista and newer IPV6 sockets to also accept IPv4
+          traffic, the socket must be explicitly set to "dual stack mode" prior
+          to binding it to an address. Since this is making windows deployments
+          exhibit behavior consistent with other platforms, this is always done.
+          We can add an option later if necessary.
+
 Mon Dec  2 18:27:38 UTC 2013  Phil Mesnier  <mesnier_p@ociweb.com>
 
         * ace/Sock_Connect.cpp:

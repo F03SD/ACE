@@ -17,7 +17,7 @@
  has been solved in a more recent version of ACE.
 
  To subscribe to the list see
-  http://www.cs.wustl.edu/~schmidt/ACE-mail.html
+  http://www.dre.vanderbilt.edu/~schmidt/ACE-mail.html
 
  Replace/remove all the explanatory text in brackets before mailing.
 
@@ -40,7 +40,7 @@
 To: ace-bugs@list.isis.vanderbilt.edu
 Subject: [area]: [synopsis]
 
-    ACE VERSION: 6.2.3
+    ACE VERSION: 6.2.5
 
     HOST MACHINE and OPERATING SYSTEM:
         If on Windows based OS's, which version of WINSOCK do you

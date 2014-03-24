@@ -1,3 +1,34 @@
+USER VISIBLE CHANGES BETWEEN ACE-6.2.5 and ACE-6.2.6
+====================================================
+
+. Resolved several data races reported by Intel Inspector XE
+USER VISIBLE CHANGES BETWEEN ACE-6.2.4 and ACE-6.2.5
+====================================================
+
+. Added the ability to build RPMs for just ACE, using an ACE-src tarball.
+  To do this add "--without tao" to the rpmbuild command line.
+
+. Added support for Embarcadero C++BuilderXE5 using
+  bcc32 in debug and release mode
+
+. When Intel C++ 2013 SP1 Update 2 is used with C++11 enabled
+  as compiler feature now also ACE_HAS_CPP11 will be defined,
+  this compiler is now able to compile all our C++11 feature
+  tests
+
+. Fixed several boundary bugs in the ACE RLE Compressor
+
+USER VISIBLE CHANGES BETWEEN ACE-6.2.3 and ACE-6.2.4
+====================================================
+
+. Added support for FC20 and ended support for FC19
+
+. Extended C++11 feature test suite
+
+. Improved support for MingW64
+
+. Improvements to IPv6 support on Windows
+
 USER VISIBLE CHANGES BETWEEN ACE-6.2.2 and ACE-6.2.3
 ====================================================
 
@@ -8,7 +39,7 @@ USER VISIBLE CHANGES BETWEEN ACE-6.2.2 and ACE-6.2.3
 
 . Ended maintenance and support for FC12 CEEL
 
-. Further improvements of the Android port: Added new define 
+. Further improvements of the Android port: Added new define
   ACE_HAS_EXPLICIT_TEMPLATE_CLASS_INSTANTIATION and related macros
   ACE_SINGLETON_TEMPLATE_INSTANTIATION and ACE_SINGLETON_TEMPLATE_INSTANTIATE
   providing a cleaner way to support explicit template (static member or class)

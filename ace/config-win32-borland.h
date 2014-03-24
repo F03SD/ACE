@@ -145,16 +145,16 @@
 # endif /* !__MT__ */
 #endif /* ACE_MT_SAFE && ACE_MT_SAFE != 0 */
 
-#if (__BORLANDC__ <= 0x660)
+#if (__BORLANDC__ <= 0x680)
 # define ACE_LACKS_ISWCTYPE
 # define ACE_LACKS_ISCTYPE
 #endif
 
-#if (__BORLANDC__ >= 0x650) && (__BORLANDC__ <= 0x660)
+#if (__BORLANDC__ >= 0x650) && (__BORLANDC__ <= 0x680)
 # define ACE_LACKS_STRTOK_R
 #endif
 
-#if (__BORLANDC__ <= 0x660)
+#if (__BORLANDC__ <= 0x680)
 # define ACE_LACKS_LOCALTIME_R
 #endif
 
@@ -166,7 +166,9 @@
 #define ACE_HAS_ITOA 1
 
 #if defined (ACE_HAS_BCC64)
-# define ACE_LACKS_SWAB
+# if (__BORLANDC__ < 0x680)
+#  define ACE_LACKS_SWAB
+# endif
 #endif
 
 #if defined (ACE_HAS_BCC32)
