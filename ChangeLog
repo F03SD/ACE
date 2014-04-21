@@ -1,3 +1,125 @@
+Fri Apr 18 06:49:06 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/Process_Unix.pm:
+          Fix executable test for targets with mapped root.
+
+        * bin/PerlACE/TestTarget.pm:
+          Add IP_ADDRESS configuration option and auto determination.
+
+        * bin/PerlACE/TestTarget_Android.pm:
+          Small cleanup.
+
+Fri Apr 11 21:26:28 UTC 2014  Phil Mesnier  <mesnier_p@ociweb.com>
+
+        * ace/SSL/SSL_Context.cpp:
+          Scoreboard cleanup. The directory add feature discussed in
+          bug 3337 still doesn't work on windows.
+
+Thu Apr 10 17:50:33 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * ace/SSL/SSL_Context.cpp:
+          Removed not needed semi colon
+
+Thu Apr 10 11:54:12 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_02_Test.cpp:
+        * tests/Compiler_Features_04_Test.cpp:
+        * tests/Compiler_Features_05_Test.cpp:
+        * tests/Compiler_Features_06_Test.cpp:
+        * tests/Compiler_Features_07_Test.cpp:
+        * tests/Compiler_Features_11_Test.cpp:
+        * tests/Compiler_Features_12_Test.cpp:
+          Layout changes
+
+        * tests/run_test.lst:
+        * tests/tests.mpc:
+        * tests/Compiler_Features_30_Test.cpp:
+          Removed this test, an empty initializer list for
+          an array of unknown size is illegal according to the
+          C++ spec
+
+Thu Apr 10 07:50:23 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/TestTarget.pm:
+          Fix file mapping problem on OpenVMS.
+
+Wed Apr  9 13:11:09 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * include/makeinclude/platform_mingw32.GNU:
+          Set ACE_PLATFORM_CONFIG to config-win32.h so that we can
+          use that in other places of the make system
+
+Wed Apr  9 08:22:45 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/Process_VMS.pm:
+          Added missing IgnoreHostRoot() method.
+
+Wed Apr  9 07:30:51 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/ProcessAndroid.pm:
+          Copy new executable if changed through Executable() method.
+          Some code cleanup.
+
+Tue Apr  8 19:27:23 UTC 2014  Phil Mesnier  <mesnier_p@ociweb.com>
+
+        * ace/SOCK_Connector.cpp:
+          Fix to allow the extended connection semantics on windows to be
+          overridden by adding #define ACE_NON_BLOCKING_BUG_DELAY 0 to
+          config.h prior to including config-win32.h. The default behavior
+          is unchanged but in cases where a tight connection timeout is
+          requested and the application's using local connections on newer
+          windows platforms, the wait then try again step may be skipped.
+
+Mon Apr  7 17:31:12 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/ACE+TAO+CIAO+DAnCE.json:
+          Ignore OpenDDS Transport_debug_level
+
+Mon Apr  7 17:27:52 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * bin/ACE+TAO+CIAO+DAnCE.json:
+          Ignore ORBSVCS logging macros
+
+Mon Apr  7 11:44:23 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/ProcessAndroid.pm:
+          Fix problems with target caching and process re-execution
+          after arguments update.
+
+Sat Apr  5 10:13:26 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * ace/OS_NS_stdlib.inl:
+          Fix ACE_OS::abort() on Android triggering segfaults.
+
+Fri Apr  4 12:32:57 UTC 2014  Johnny Willemsen  <jwillemsen@remedy.nl>
+
+        * tests/Compiler_Features_34_Test.cpp:
+        * tests/run_test.lst:
+        * tests/tests.mpc:
+          New C++ compiler feature test
+
+Fri Apr  4 11:17:44 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * include/makeinclude/platform_android.GNU:
+          Make linking the shared STL library dependent on static_libs_only.
+
+Fri Apr  4 08:38:05 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/ProcessAndroid.pm:
+        * bin/PerlACE/TestTarget.pm:
+        * bin/PerlACE/TestTarget_Android.pm:
+          Refactoring to improve functionality and stability of running
+          tests on Android Virtual Device (AVD).
+
+        * bin/PerlACE/Process_Unix.pm:
+          Small correction in remote PID retrieval.
+
+Thu Mar 27 09:34:54 UTC 2014  Martin Corino  <mcorino@remedy.nl>
+
+        * bin/PerlACE/ProcessAndroid.pm:
+        * bin/PerlACE/TestTarget_Android.pm:
+          Added support for copying system libraries to emulator target.
+
 Mon Mar 24 10:27:40 UTC 2014  Martin Corino  <mcorino@remedy.nl>
 
         * bin/PerlACE/Process_Unix.pm:

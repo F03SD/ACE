@@ -13,6 +13,7 @@ use File::Copy;
 use File::Spec;
 use File::Basename;
 use PerlACE::Run_Test;
+use Socket;
 use Sys::Hostname;
 use Cwd;
 
@@ -237,6 +238,10 @@ sub GetConfigSettings ($)
     } else {
         $self->{HOSTNAME} = hostname();
     }
+    $env_name = $env_prefix.'IP_ADDRESS';
+    if (exists $ENV{$env_name}) {
+        $self->{IP_ADDRESS} = $ENV{$env_name};
+    }
     $env_name = $env_prefix.'IBOOT';
     if (exists $ENV{$env_name}) {
         $self->{IBOOT} = $ENV{$env_name};
@@ -321,6 +326,7 @@ sub GetConfigSettings ($)
             }
         }
     }
+    $self->{RUNTIME_LIBDEP} = ();
 }
 
 ##################################################################
@@ -353,6 +359,23 @@ sub HostName ($)
 {
     my $self = shift;
     return $self->{HOSTNAME};
+}
+
+sub IP_Address ($)
+{
+    my $self = shift;
+    if (!defined $self->{IP_ADDRESS}) {
+      my @host = gethostbyname($self->{HOSTNAME});
+      if (scalar(@host) == 0) {
+          $self->{IP_ADDRESS} = "not found";
+      } else {
+          $self->{IP_ADDRESS} = inet_ntoa($host[4]);
+      }
+      if (defined $ENV{'ACE_TEST_VERBOSE'}) {
+          print STDERR "Target host [" . $self->{HOSTNAME} . "] has ipaddres : " . $self->{IP_ADDRESS};
+      }
+    }
+    return $self->{IP_ADDRESS};
 }
 
 sub ExeSubDir ($)
@@ -468,6 +491,13 @@ sub AddLibPath ($)
     }
 }
 
+sub AddRuntimeLibrary ($)
+{
+    my $self = shift;
+    my $lib = shift;
+    push(@{$self->{RUNTIME_LIBDEP}}, $lib);
+}
+
 sub SetEnv ($)
 {
     my $self = shift;
@@ -518,11 +548,9 @@ sub WaitForFileTimed ($)
     my $self = shift;
     my $file = shift;
     my $timeout = shift;
-    my $newfile;
+    # expand path and possibly map to remote target root
+    my $newfile = $self->LocalFile($file);
     if (defined $self->{REMOTE_SHELL} && defined $self->{REMOTE_FILETEST}) {
-        # Going to test on remote target so we have to make sure the
-        # local file path is mapped to what the target can access
-        $newfile = $self->LocalFile($file);
         if (defined $ENV{'ACE_TEST_VERBOSE'}) {
             print STDERR "Waiting for remote $file using path $newfile\n";
         }
@@ -547,9 +575,6 @@ sub WaitForFileTimed ($)
         }
         return -1;
     } else {
-        # Going to test locally so we should not map the local
-        # file path, only expand it
-        $newfile = File::Spec->rel2abs($file);
         if (defined $ENV{'ACE_TEST_VERBOSE'}) {
             print STDERR "Waiting for local $file using path $newfile\n";
         }

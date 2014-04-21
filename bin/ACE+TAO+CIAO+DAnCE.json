@@ -80,8 +80,12 @@
             { line_regex: "CIAO::debug_level" },
             { line_regex: "DAnCE::debug_level" },
             { line_regex: "DANCE::debug_level" },
+            { line_regex: "ORBSVCS_DEBUG" },
+            { line_regex: "ORBSVCS_ERROR" },
+            { line_regex: "ORBSVCS_ERROR_RETURN" },
             { line_regex: "VDBG" },
             { line_regex: "VDBG_LVL" },
+            { line_regex: "Transport_debug_level" },
           ] },
           exclusion_reason: "policy indicates no need to test logging code",
         }

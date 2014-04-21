@@ -771,13 +771,6 @@ project(Compiler_Features_29_Test) : acetest {
   }
 }
 
-project(Compiler_Features_30_Test) : acetest {
-  exename = Compiler_Features_30_Test
-  Source_Files {
-    Compiler_Features_30_Test.cpp
-  }
-}
-
 project(Compiler_Features_31_Test) : acetest {
   exename = Compiler_Features_31_Test
   Source_Files {
@@ -796,6 +789,13 @@ project(Compiler_Features_33_Test) : acetest {
   exename = Compiler_Features_33_Test
   Source_Files {
     Compiler_Features_33_Test.cpp
+  }
+}
+
+project(Compiler_Features_34_Test) : acetest {
+  exename = Compiler_Features_34_Test
+  Source_Files {
+    Compiler_Features_34_Test.cpp
   }
 }
 

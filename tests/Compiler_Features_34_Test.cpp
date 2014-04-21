@@ -9,17 +9,20 @@
 
 #if defined (ACE_HAS_CPP11)
 
-#include <cstdint>
+class B
+{
+public:
+private:
+    B& operator= (B&& x) = delete;
+};
 
 int
 run_main (int, ACE_TCHAR *[])
 {
-  ACE_START_TEST (ACE_TEXT("Compiler_Features_30_Test"));
+  ACE_START_TEST (ACE_TEXT("Compiler_Features_34_Test"));
 
-  int8_t t[] = {};
-  int8_t x[] {};
-  ACE_UNUSED_ARG (t);
-  ACE_UNUSED_ARG (x);
+  B a;
+  ACE_UNUSED_ARG (a);
 
   ACE_DEBUG ((LM_INFO,
               ACE_TEXT ("C++11 support ok\n")));
@@ -33,7 +36,7 @@ run_main (int, ACE_TCHAR *[])
 int
 run_main (int, ACE_TCHAR *[])
 {
-  ACE_START_TEST (ACE_TEXT("Compiler_Features_30_Test"));
+  ACE_START_TEST (ACE_TEXT("Compiler_Features_34_Test"));
 
   ACE_DEBUG ((LM_INFO,
               ACE_TEXT ("No C++11 support enabled\n")));
